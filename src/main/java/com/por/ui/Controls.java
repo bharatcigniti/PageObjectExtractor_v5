@@ -3,6 +3,7 @@ package com.por.ui;
 import com.por.utils.Generic;
 import com.por.utils.GlobalConstants;
 import com.por.utils.UIDesign;
+import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -10,7 +11,10 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -55,7 +59,7 @@ public class Controls extends javax.swing.JFrame {
         rbClassName = new javax.swing.JRadioButton();
         inputClassName = new javax.swing.JTextField();
         rbXpathRelative = new javax.swing.JRadioButton();
-        InputXpathRelative = new javax.swing.JTextField();
+        inputXpathRelative = new javax.swing.JTextField();
         inputAbsolute = new javax.swing.JTextField();
         rbAbsoulte = new javax.swing.JRadioButton();
         btnCapture = new javax.swing.JButton();
@@ -92,22 +96,23 @@ public class Controls extends javax.swing.JFrame {
         tblPageObjects.getSelectionModel().addListSelectionListener(new SelectionListener());
 //        jScrollPane1.setViewportView(tblPageObjects);
 
-        rbID.setText("ID: ");
+        rbID.setText("ID");
 
-        rbText.setText("Text:");
+        rbText.setText("Text");
 
-        rbName.setText("Name:");
+        rbName.setText("Name");
 
-        rbTagName.setText("TagName:");
+        rbTagName.setText("TagName");
 
-        rbCSS.setText("CSS:");
+        rbCSS.setText("CSS");
 
-        rbClassName.setText("ClassName:");
+        rbClassName.setText("ClassName");
 
         rbXpathRelative.setText("Xpath Relative");
 
         rbAbsoulte.setText("Xpath Absolute");
 
+        rbXpathRelative.setSelected(true);
 
         bgSeleniumIdentifiers.add(rbID);
         bgSeleniumIdentifiers.add(rbAbsoulte);
@@ -118,6 +123,28 @@ public class Controls extends javax.swing.JFrame {
         bgSeleniumIdentifiers.add(rbXpathRelative);
         bgSeleniumIdentifiers.add(rbText);
 
+        inputSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                inputSearchKeyReleased(evt);
+            }
+        });
+        inputSearch.setFont(new java.awt.Font("Tahoma", 0, 16));
+        inputSearch.setForeground(new java.awt.Color(127 , 127, 127));
+        inputSearch.setText("  Search with Object Name");
+        inputSearch.addFocusListener(new FocusListener() {
+            public void focusGained(FocusEvent e) {
+                inputSearch.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+                if(inputSearch.getText().trim().contains("Search with Object Name")){
+                    inputSearch.setText("");
+                }
+            }
+            public void focusLost(FocusEvent e) {
+                if(StringUtils.isEmpty(inputSearch.getText())){
+                    inputSearch.setText("  Search with Object Name");
+                }
+            }
+
+        });
 
         btnCapture.setFont(new java.awt.Font("Calibri", 1, 15));
 //        btnCapture.setForeground(new java.awt.Color(0, 153, 102));
@@ -249,7 +276,7 @@ public class Controls extends javax.swing.JFrame {
                                                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                                                                         .addComponent(rbXpathRelative)
                                                                         .addGap(36, 36, 36)
-                                                                        .addComponent(InputXpathRelative, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                                                        .addComponent(inputXpathRelative, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                         .addGroup(jPanel1Layout.createSequentialGroup()
                                                 .addContainerGap()
                                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -295,7 +322,7 @@ public class Controls extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(rbXpathRelative)
-                                        .addComponent(InputXpathRelative, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(inputXpathRelative, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(rbAbsoulte)
@@ -336,7 +363,7 @@ public class Controls extends javax.swing.JFrame {
         setVisible(true);
     }
     public static void init_Load(){
-        rbXpathRelative.setSelected(true);
+
         btnCapture.setEnabled(false);
         inputID.setText("");
         inputName.setText("");
@@ -382,6 +409,7 @@ public class Controls extends javax.swing.JFrame {
           //  JOptionPane.showMessageDialog(null, "Successfully Saved , File Path::" + GlobalConstants.JSON_FILE_PATH + File.separator + Generic.removeSpecialChars(GlobalConstants.PAGE_TITLE) + "_" + Generic.getDate() + "_" + Generic.getTime() + ".json", "Info", JOptionPane.INFORMATION_MESSAGE);
 
             clearTable();
+            clearFields();
         }
     }
 
@@ -415,7 +443,28 @@ public class Controls extends javax.swing.JFrame {
         for (int i = rowCount - 1; i >= 0; i--) {
             tblRecordmodel.removeRow(i);
         }
+
     }
+
+    public static void clearFields(){
+        inputID.setText("");
+        inputName.setText("");
+        inputText.setText("");
+        inputAbsolute.setText("");
+        inpuTagName.setText("");
+        inputCSS.setText("");
+        inputClassName.setText("");
+        inputXpathRelative.setText("");
+    }
+    private void inputSearchKeyReleased(java.awt.event.KeyEvent evt) {
+        filter(inputSearch.getText());
+    }
+    public void filter(String query){
+        TableRowSorter<DefaultTableModel> tr=new TableRowSorter<DefaultTableModel>(tblRecordmodel);
+        tblPageObjects.setRowSorter(tr);
+        tr.setRowFilter(RowFilter.regexFilter(query));
+    }
+
     class SelectionListener implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent e) {
             if(e.getValueIsAdjusting())
@@ -436,17 +485,31 @@ public class Controls extends javax.swing.JFrame {
             selected_table_row_objPath = (String) tblPageObjects.getModel().getValueAt(row, 3);
 
             selected_row = row;
-            //  Constants.TABLE_SELECTED = selected_table_row;
+        }
+    }
 
-            // tblPageObjects.setSelectionBackground(Color.ORANGE);
-
-
-
+    public static String getIdentifier(){
+        if(rbID.isSelected()){
+            return rbID.getText();
+        }else if(rbName.isSelected()){
+            return rbName.getText();
+        } else if(rbTagName.isSelected()){
+            return rbTagName.getText();
+        } else if (rbClassName.isSelected()){
+            return rbClassName.getText();
+        } else if (rbText.isSelected()){
+            return rbText.getText();
+        } else if (rbCSS.isSelected()){
+            return rbCSS.getText();
+        } else if (rbAbsoulte.isSelected()){
+            return rbAbsoulte.getText();
+        } else{
+            return rbXpathRelative.getText();
         }
     }
 
     // Variables declaration - do not modify
-    public static javax.swing.JTextField InputXpathRelative;
+    public static javax.swing.JTextField inputXpathRelative;
     public static javax.swing.JButton btnCapture;
     public static javax.swing.JButton btnCaptureAll;
     public static javax.swing.JButton btnClose;

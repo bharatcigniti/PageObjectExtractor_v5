@@ -110,39 +110,68 @@ public class Generic {
         return rbTestdata.getString("drivers.path");
     }
 
+    public static String getXpath(String selectedIdentifier,String value,String xpath){
+        String status=null;
+        switch (selectedIdentifier.toLowerCase()){
+            case "id":
+                status = "id = '"+value+"'";
+                break;
+            case "name":
+                status = "name = '"+value+"'";
+                break;
+            case "xpath relative":
+                status=xpath;
+                break;
+            case "xpath absolute":
+                status=xpath;
+                break;
+            case "tagname":
+                status ="tagname ='"+value+"'";
+                break;
+            case "css":
+                status = "css = '"+value+"'";
+                break;
+            case "classname":
+                status = "classname ='"+value+"'";
+                break;
+        }
+        return status;
+    }
+
     public static void getPageObjectStructure(String tagname,String type, String identifier,String value){
         String xpath=null;
+        String selectedIdentifier = Controls.getIdentifier();
+        System.out.println("selectedIdentifier::"+selectedIdentifier);
         if(identifier.equalsIgnoreCase("text")){
             identifier = "text()";
         } else{
             identifier = "@"+identifier;
         }
         switch (tagname.toLowerCase()){
-
             case "input":
                 if(type.equalsIgnoreCase("text") || type.equalsIgnoreCase("password") || type.equalsIgnoreCase("input") || type.equalsIgnoreCase("email") || type.equalsIgnoreCase("number") || type.equalsIgnoreCase("search") || type.equalsIgnoreCase("url") || type.equalsIgnoreCase("tel")){
                     xpath = "//"+tagname+"["+identifier+"='"+value+"']";
-                    Controls.InputXpathRelative.setText(xpath);
+                    Controls.inputXpathRelative.setText(xpath);
                     GlobalConstants.tblRowno_incrementor = GlobalConstants.tblRowno_incrementor+1;
-                    Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"input_"+value,"Input Box",xpath});
+                    Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"input_"+value,"Input Box",getXpath(selectedIdentifier,value,xpath)});
                 }
                 if(type.equalsIgnoreCase("image") || type.equalsIgnoreCase("submit")){
                     xpath = "//"+tagname+"["+identifier+"='"+value+"']";
-                    Controls.InputXpathRelative.setText(xpath);
+                    Controls.inputXpathRelative.setText(xpath);
                     GlobalConstants.tblRowno_incrementor = GlobalConstants.tblRowno_incrementor+1;
-                    Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"btn_"+value,"Button",xpath});
+                    Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"btn_"+value,"Button",getXpath(selectedIdentifier,value,xpath)});
                 }
                 if(type.equalsIgnoreCase("checkbox")){
                     xpath = "//"+tagname+"["+identifier+"='"+value+"']";
-                    Controls.InputXpathRelative.setText(xpath);
+                    Controls.inputXpathRelative.setText(xpath);
                     GlobalConstants.tblRowno_incrementor = GlobalConstants.tblRowno_incrementor+1;
-                    Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"chkbox_"+value,"CheckBox",xpath});
+                    Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"chkbox_"+value,"CheckBox",getXpath(selectedIdentifier,value,xpath)});
                 }
                 if(type.equalsIgnoreCase("radio")){
                     xpath = "//"+tagname+"["+identifier+"='"+value+"']";
-                    Controls.InputXpathRelative.setText(xpath);
+                    Controls.inputXpathRelative.setText(xpath);
                     GlobalConstants.tblRowno_incrementor = GlobalConstants.tblRowno_incrementor+1;
-                    Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"radio_"+value,"RadioButton",xpath});
+                    Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"radio_"+value,"RadioButton",getXpath(selectedIdentifier,value,xpath)});
                 }
 //                if(type.equalsIgnoreCase("radio")){
 //                    x
@@ -152,58 +181,58 @@ public class Generic {
                 break;
             case "button":
                 xpath = "//"+tagname+"["+identifier+"='"+value+"']";
-                Controls.InputXpathRelative.setText(xpath);
+                Controls.inputXpathRelative.setText(xpath);
                 GlobalConstants.tblRowno_incrementor = GlobalConstants.tblRowno_incrementor+1;
-                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"btn_"+value,"Button",xpath});
+                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"btn_"+value,"Button",getXpath(selectedIdentifier,value,xpath)});
                 break;
 
             case "a":
                 xpath = "//"+tagname+"["+identifier+"='"+value+"']";
-                Controls.InputXpathRelative.setText(xpath);
+                Controls.inputXpathRelative.setText(xpath);
                 GlobalConstants.tblRowno_incrementor = GlobalConstants.tblRowno_incrementor+1;
-                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"lnk_"+value,"Link",xpath});
+                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"lnk_"+value,"Link",getXpath(selectedIdentifier,value,xpath)});
                 break;
             case "select":
                 xpath = "//"+tagname+"["+identifier+"='"+value+"']";
-                Controls.InputXpathRelative.setText(xpath);
+                Controls.inputXpathRelative.setText(xpath);
                 GlobalConstants.tblRowno_incrementor = GlobalConstants.tblRowno_incrementor+1;
-                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"list_"+value,"ComboBox",xpath});
+                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"list_"+value,"ComboBox",getXpath(selectedIdentifier,value,xpath)});
                 break;
             case "h1":
                 xpath = "//"+tagname+"["+identifier+"='"+value+"']";
-                Controls.InputXpathRelative.setText(xpath);
+                Controls.inputXpathRelative.setText(xpath);
                 GlobalConstants.tblRowno_incrementor = GlobalConstants.tblRowno_incrementor+1;
-                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"txt_"+value,"Text",xpath});
+                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"txt_"+value,"Text",getXpath(selectedIdentifier,value,xpath)});
                 break;
             case "h2":
                 xpath = "//"+tagname+"["+identifier+"='"+value+"']";
-                Controls.InputXpathRelative.setText(xpath);
+                Controls.inputXpathRelative.setText(xpath);
                 GlobalConstants.tblRowno_incrementor = GlobalConstants.tblRowno_incrementor+1;
-                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"txt_"+value,"Text",xpath});
+                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"txt_"+value,"Text",getXpath(selectedIdentifier,value,xpath)});
                 break;
             case "h3":
                 xpath = "//"+tagname+"["+identifier+"='"+value+"']";
-                Controls.InputXpathRelative.setText(xpath);
+                Controls.inputXpathRelative.setText(xpath);
                 GlobalConstants.tblRowno_incrementor = GlobalConstants.tblRowno_incrementor+1;
-                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"txt_"+value,"Text",xpath});
+                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"txt_"+value,"Text",getXpath(selectedIdentifier,value,xpath)});
                 break;
             case "h4":
                 xpath = "//"+tagname+"["+identifier+"='"+value+"']";
-                Controls.InputXpathRelative.setText(xpath);
+                Controls.inputXpathRelative.setText(xpath);
                 GlobalConstants.tblRowno_incrementor = GlobalConstants.tblRowno_incrementor+1;
-                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"txt_"+value,"Text",xpath});
+                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"txt_"+value,"Text",getXpath(selectedIdentifier,value,xpath)});
                 break;
             case "h5":
                 xpath = "//"+tagname+"["+identifier+"='"+value+"']";
-                Controls.InputXpathRelative.setText(xpath);
+                Controls.inputXpathRelative.setText(xpath);
                 GlobalConstants.tblRowno_incrementor = GlobalConstants.tblRowno_incrementor+1;
-                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"txt_"+value,"Text",xpath});
+                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"txt_"+value,"Text",getXpath(selectedIdentifier,value,xpath)});
                 break;
             case "h6":
                 xpath = "//"+tagname+"["+identifier+"='"+value+"']";
-                Controls.InputXpathRelative.setText(xpath);
+                Controls.inputXpathRelative.setText(xpath);
                 GlobalConstants.tblRowno_incrementor = GlobalConstants.tblRowno_incrementor+1;
-                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"txt_"+value,"Text",xpath});
+                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"txt_"+value,"Text",getXpath(selectedIdentifier,value,xpath)});
                 break;
         }
 

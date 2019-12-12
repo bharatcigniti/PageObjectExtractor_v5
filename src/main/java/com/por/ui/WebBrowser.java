@@ -156,8 +156,6 @@ public class WebBrowser extends Application {
 
     public void action(String tagname,String type){
         Controls.init_Load();
-       // Generic.getPageObjectStructure(tagname,type,By,value);
-
         if(StringUtils.isEmpty(GlobalConstants.ID)){
             if(StringUtils.isEmpty(GlobalConstants.NAME)){
                 if(StringUtils.isEmpty(GlobalConstants.TEXT)){
