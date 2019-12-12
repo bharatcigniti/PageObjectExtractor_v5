@@ -1,6 +1,6 @@
-package com.spy.utils;
+package com.por.utils;
 
-import com.spy.ui.Controls;
+import com.por.ui.Controls;
 
 import javax.swing.*;
 import java.io.File;
@@ -21,6 +21,7 @@ public class Generic {
 
     public static String removeSpecialChars(String string){
         String str;
+        System.out.println("String::"+string);
         str = string.trim().replaceAll("\\s+","");
         //str = str.replaceAll("[-'`~!@#$%&()_;:,<>.?/+^|]*", "");
         str = str.replaceAll("[^a-zA-Z0-9]", "");

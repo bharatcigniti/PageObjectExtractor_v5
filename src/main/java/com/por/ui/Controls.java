@@ -1,8 +1,8 @@
-package com.spy.ui;
+package com.por.ui;
 
-import com.spy.utils.Generic;
-import com.spy.utils.GlobalConstants;
-import com.spy.utils.UIDesign;
+import com.por.utils.Generic;
+import com.por.utils.GlobalConstants;
+import com.por.utils.UIDesign;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -21,7 +21,7 @@ import java.io.IOException;
  */
 public class Controls extends javax.swing.JFrame {
 
-    JSONArray objects = new JSONArray();
+   static JSONArray objects = new JSONArray();
     public static DefaultTableModel tblRecordmodel = new DefaultTableModel();
     public static ButtonGroup bgSeleniumIdentifiers = new ButtonGroup();
 
@@ -361,20 +361,28 @@ public class Controls extends javax.swing.JFrame {
 
     }
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {
-        String fileFolderPath = Generic.choosefolderPath();
-        objects.clear();
-        int rowCount = tblRecordmodel.getRowCount();
-        for(int k=0;k<rowCount;k++){
-            objects.add(getObjectInfo(tblRecordmodel.getValueAt(k,1).toString(),tblRecordmodel.getValueAt(k,2).toString(),tblRecordmodel.getValueAt(k,3).toString()));
-        }
-        try (FileWriter file = new FileWriter(fileFolderPath+ File.separator+Generic.removeSpecialChars(GlobalConstants.PAGE_TITLE)+"_"+Generic.getDate()+"_"+Generic.getTime()+".json")) {
-            file.write(objects.toJSONString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        JOptionPane.showMessageDialog(null, "Successfully Saved , File Path::"+fileFolderPath+File.separator+Generic.removeSpecialChars(GlobalConstants.PAGE_TITLE)+"_"+Generic.getDate()+"_"+Generic.getTime()+".json", "Info" , JOptionPane.INFORMATION_MESSAGE);
+       saveJson();
+    }
 
-        clearTable();
+    public static void saveJson(){
+        int rowCount = tblRecordmodel.getRowCount();
+        if(rowCount>0) {
+
+            objects.clear();
+
+            for (int k = 0; k < rowCount; k++) {
+                objects.add(getObjectInfo(tblRecordmodel.getValueAt(k, 1).toString(), tblRecordmodel.getValueAt(k, 2).toString(), tblRecordmodel.getValueAt(k, 3).toString()));
+            }
+            System.out.println("title::"+GlobalConstants.PAGE_TITLE);
+            try (FileWriter file = new FileWriter(GlobalConstants.JSON_FILE_PATH + File.separator + Generic.removeSpecialChars(GlobalConstants.PAGE_TITLE) + "_" + Generic.getDate() + "_" + Generic.getTime() + ".json")) {
+                file.write(objects.toJSONString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+          //  JOptionPane.showMessageDialog(null, "Successfully Saved , File Path::" + GlobalConstants.JSON_FILE_PATH + File.separator + Generic.removeSpecialChars(GlobalConstants.PAGE_TITLE) + "_" + Generic.getDate() + "_" + Generic.getTime() + ".json", "Info", JOptionPane.INFORMATION_MESSAGE);
+
+            clearTable();
+        }
     }
 
 
@@ -384,7 +392,7 @@ public class Controls extends javax.swing.JFrame {
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {
         WebBrowser.controls.setVisible(false);
     }
-    JSONObject getObjectInfo(String objName, String objPath, String objType){
+    static JSONObject getObjectInfo(String objName, String objPath, String objType){
         JSONObject obj = new JSONObject();
         obj.put("Name", objName);
         obj.put("Value", objPath);
@@ -402,10 +410,10 @@ public class Controls extends javax.swing.JFrame {
         });
     }
 
-    public void clearTable(){
+    public static void clearTable(){
         int rowCount = tblRecordmodel.getRowCount();
-        for(int h=0;h<rowCount-1;h++){
-            tblRecordmodel.removeRow(h);
+        for (int i = rowCount - 1; i >= 0; i--) {
+            tblRecordmodel.removeRow(i);
         }
     }
     class SelectionListener implements ListSelectionListener {

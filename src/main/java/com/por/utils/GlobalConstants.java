@@ -1,4 +1,4 @@
-package com.spy.utils;
+package com.por.utils;
 
 import java.util.HashMap;
 
@@ -32,6 +32,8 @@ public class GlobalConstants {
 
     public static String PAGE_TITLE=null;
     public static String PAGE_SOURCE=null;
+
+    public static String JSON_FILE_PATH=null;
 
 }
 

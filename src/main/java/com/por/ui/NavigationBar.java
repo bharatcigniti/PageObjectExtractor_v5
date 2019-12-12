@@ -1,24 +1,18 @@
-package com.spy.ui;
+package com.por.ui;
 
+import com.por.utils.GlobalConstants;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
-
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
-import java.net.MalformedURLException;
 
 public class NavigationBar extends HBox
 {
@@ -41,7 +35,7 @@ public class NavigationBar extends HBox
 
 		// Create the TextField
 		TextField pageUrl = new TextField();
-
+		pageUrl.setText(GlobalConstants.BASE_URL);
 		// Create the Buttons
 		Button goButton = new Button("Go");
 		Button controlsButton = new Button("Controls");

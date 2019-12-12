@@ -1,7 +1,7 @@
-package com.spy.ui;
+package com.por.ui;
 
-import com.spy.utils.Generic;
-import com.spy.utils.GlobalConstants;
+import com.por.utils.Generic;
+import com.por.utils.GlobalConstants;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -14,19 +14,21 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
 
 import javax.swing.*;
 
 public class WebBrowser extends Application {
 
-    public static ProgressBar progressBar = new ProgressBar(0);
+    public static ProgressBar progressBar;
     public static Controls controls;
 
 //    public static void main(String[] args) {
 //        launch(args);
 //    }
 
+    public void browserLaunch(String url){
+        launch(url);
+    }
 
 
     public void start(Stage primaryStage) {
@@ -38,15 +40,18 @@ public class WebBrowser extends Application {
         WebView webView = new WebView();
 
         WebEngine engine = webView.getEngine();
+         progressBar= new ProgressBar(0);
 
         webView.getEngine().titleProperty().addListener(new ChangeListener<String>()
         {
             public void changed(ObservableValue<? extends String> ov,
-                                final String oldvalue, final String newvalue)
-            {
+                                final String oldvalue, final String newvalue){
+                GlobalConstants.PAGE_TITLE = oldvalue;
                 // Set the Title of the Stage
                 primaryStage.setTitle(newvalue);
-                GlobalConstants.PAGE_TITLE = newvalue;
+                if(!StringUtils.isEmpty(GlobalConstants.PAGE_TITLE)){
+                    Controls.saveJson();
+                }
             }
         });
         engine.getLoadWorker().stateProperty().addListener((obs, oldValue, newValue) -> {
@@ -114,8 +119,8 @@ public class WebBrowser extends Application {
 
         });
 
-//        String homePageUrl = "http://newtours.demoaut.com/";
-        String homePageUrl = "http://10.62.65.229:81/sugarcrm/index.php?action=Login&module=Users";
+        String homePageUrl = "http://newtours.demoaut.com/";
+//        String homePageUrl = "http://10.62.65.229:81/sugarcrm/index.php?action=Login&module=Users";
         engine.load(homePageUrl);
 
         NavigationBar navigationBar = new NavigationBar(webView, homePageUrl, true);

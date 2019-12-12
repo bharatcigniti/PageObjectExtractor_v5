@@ -28,7 +28,7 @@
                         <configuration>
                             <classifier>spring-boot</classifier>
                             <mainClass>
-                                com.pageobjectExtractor.ui.Main
+                                com.por.ui.SetBaseURL
                             </mainClass>
                         </configuration>
                     </execution>

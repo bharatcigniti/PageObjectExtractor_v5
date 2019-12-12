@@ -1,7 +1,7 @@
-package com.spy.ui;
+package com.por.ui;
 
-import com.spy.utils.DomExtractor;
-import com.spy.utils.GlobalConstants;
+import com.por.utils.DomExtractor;
+import com.por.utils.GlobalConstants;
 
 import javax.swing.*;
 import java.awt.*;
