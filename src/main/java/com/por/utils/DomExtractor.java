@@ -2,12 +2,16 @@ package com.por.utils;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
+import us.codecraft.xsoup.Xsoup;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -15,7 +19,7 @@ import java.util.ArrayList;
  */
 
 public class DomExtractor {
-    Document document;
+    static Document document;
     String xpath=null;
     String findby=null;
 
@@ -463,20 +467,45 @@ public class DomExtractor {
         String text_remove=null;
         String inputvarName = null;
         int iterator = 0;
+        String identifier =null;
+        String value = null;
+        Document document = Jsoup.parse(GlobalConstants.PAGE_SOURCE);
+        Elements elements = Xsoup.compile("//input[@name='userName']").evaluate(document).getElements();
+		//Element element = document.select("//input[@name='userName']").first();
+		System.out.println("XPATH::>>"+DomExtractor.getXpath(elements.get(0)));
 
         for (Element input_edit : input_Edits) {
             if (input_edit.attr("type").equalsIgnoreCase("input")||input_edit.attr("type").equalsIgnoreCase("text")||input_edit.attr("type").equalsIgnoreCase("password")||input_edit.attr("type").equalsIgnoreCase("email")||input_edit.attr("type").equalsIgnoreCase("number")||input_edit.attr("type").equalsIgnoreCase("search")||input_edit.attr("type").equalsIgnoreCase("url")||input_edit.attr("type").equalsIgnoreCase("tel")) {
-                String getName = input_edit.attr("name");
+                value = input_edit.attr("name");
+                identifier= "@name";
+
+                if(StringUtils.isEmpty(value)){
+
+
+                    for(Attribute att : input_edit.attributes().asList()){
+                        if(att.getKey().contains("name")){
+                            identifier = "@"+att.getKey();
+                            value = att.getValue();
+                        }  else if(att.getKey().contains("placeholder")){
+                            identifier = "@"+att.getKey();
+                            value = att.getValue();
+                        } else if(att.getKey().contains("class")){
+                            identifier = "@"+att.getKey();
+                            value = att.getValue();
+                        }
+
+                    }
+                }
                 String tagName = input_edit.tagName();
                 String hiddenType = input_edit.attr("type");
-                text_remove = Generic.removeSpecialChars(getName);
+                text_remove = Generic.removeSpecialChars(value);
                 if (!hiddenType.equalsIgnoreCase("hidden")) {
-                    if (!StringUtils.isEmpty(getName) || !StringUtils.isEmpty(text_remove)) {
-                        xpath = getParentelements(input_edit) + tagName + "[@name='" + getName + "']";
+                    if (!StringUtils.isEmpty(value) || !StringUtils.isEmpty(text_remove)) {
+                        xpath = getParentelements(input_edit) + tagName + "["+identifier+"='" + value + "']";
                     }
                 }
                 findby = "xpath = " + xpath;
-                inputvarName = "input_" + Generic.removeSpecialChars(getName);
+                inputvarName = "input_" + Generic.removeSpecialChars(value);
 
                 if (!StringUtils.isEmpty(xpath)) {
                     //if (GlobalConstants.driver.findElement(By.xpath(xpath)).isDisplayed()) {
@@ -580,6 +609,29 @@ public class DomExtractor {
                 returnVal="//"+level1+"[@id='"+id+"']/";
             }
         }
+        return returnVal;
+    }
+
+    public static String getXpath(Node element){
+
+        System.out.println("element:"+element);
+        String returnVal=null;
+
+
+        int ix=0;
+        List<Node> siblings = element.parentNode().childNodes();
+        
+        for(int i=0;i<siblings.size();i++){
+            Node sibling = siblings.get(i);
+
+            if(sibling==element){
+                returnVal = getXpath(element.parentNode()) + '/' + element.nodeName().toLowerCase() + '[' + (ix + 1) + ']';
+            }
+            if (sibling.nodeName() == element.nodeName()) {
+                ix++;
+            }
+        }
+
         return returnVal;
     }
     public String firstFive(String str) {

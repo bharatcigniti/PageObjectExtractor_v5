@@ -21,7 +21,6 @@ public class Generic {
 
     public static String removeSpecialChars(String string){
         String str;
-        System.out.println("String::"+string);
         str = string.trim().replaceAll("\\s+","");
         //str = str.replaceAll("[-'`~!@#$%&()_;:,<>.?/+^|]*", "");
         str = str.replaceAll("[^a-zA-Z0-9]", "");
@@ -140,8 +139,8 @@ public class Generic {
 
     public static void getPageObjectStructure(String tagname,String type, String identifier,String value){
         String xpath=null;
+        System.out.println("value:"+value+">>tagname:"+tagname+">> type:"+type+">> identifier:"+identifier);
         String selectedIdentifier = Controls.getIdentifier();
-        System.out.println("selectedIdentifier::"+selectedIdentifier);
         if(identifier.equalsIgnoreCase("text")){
             identifier = "text()";
         } else{
@@ -155,6 +154,12 @@ public class Generic {
                     GlobalConstants.tblRowno_incrementor = GlobalConstants.tblRowno_incrementor+1;
                     Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"input_"+value,"Input Box",getXpath(selectedIdentifier,value,xpath)});
                 }
+//                if(identifier.equalsIgnoreCase("formcontrolname")){
+//                    xpath = "//"+tagname+"["+identifier+"='"+value+"']";
+//                    Controls.inputXpathRelative.setText(xpath);
+//                    GlobalConstants.tblRowno_incrementor = GlobalConstants.tblRowno_incrementor+1;
+//                    Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"input_"+value,"Input Box",getXpath(selectedIdentifier,value,xpath)});
+//                }
                 if(type.equalsIgnoreCase("image") || type.equalsIgnoreCase("submit")){
                     xpath = "//"+tagname+"["+identifier+"='"+value+"']";
                     Controls.inputXpathRelative.setText(xpath);
@@ -180,6 +185,12 @@ public class Generic {
 //                }
                 break;
             case "button":
+                xpath = "//"+tagname+"["+identifier+"='"+value+"']";
+                Controls.inputXpathRelative.setText(xpath);
+                GlobalConstants.tblRowno_incrementor = GlobalConstants.tblRowno_incrementor+1;
+                Controls.tblRecordmodel.addRow(new Object[]{GlobalConstants.tblRowno_incrementor,"btn_"+value,"Button",getXpath(selectedIdentifier,value,xpath)});
+                break;
+            case "span":
                 xpath = "//"+tagname+"["+identifier+"='"+value+"']";
                 Controls.inputXpathRelative.setText(xpath);
                 GlobalConstants.tblRowno_incrementor = GlobalConstants.tblRowno_incrementor+1;

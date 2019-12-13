@@ -5,6 +5,7 @@ import java.util.HashMap;
 public class GlobalConstants {
 
     public static String ID=null;
+    public static String getformcontrolname=null;
     public static String NAME=null;
     public static String TEXT=null;
     public static String TAGNAME=null;

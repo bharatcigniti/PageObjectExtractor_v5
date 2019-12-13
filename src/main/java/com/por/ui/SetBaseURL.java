@@ -1,5 +1,6 @@
 package com.por.ui;
 
+import com.por.ex.FxWebViewExample4;
 import com.por.utils.Generic;
 import com.por.utils.GlobalConstants;
 
@@ -77,7 +78,8 @@ public class SetBaseURL extends JFrame {
 
         inputBaseURL.setFont(new Font("Tahoma", 0, 17));
         inputBaseURL.setForeground(new Color(0, 101, 202));
-        inputBaseURL.setText("http://newtours.demoaut.com/");
+     //   inputBaseURL.setText("http://newtours.demoaut.com/");
+        inputBaseURL.setText("");
         inputBaseURL.setBorder(BorderFactory.createLineBorder(new Color(0, 162, 232)));
 
         txtBASEURL.setFont(new Font("Tahoma", 0, 13));
@@ -155,8 +157,10 @@ public class SetBaseURL extends JFrame {
         GlobalConstants.JSON_FILE_PATH = Generic.choosefolderPath();
         Thread t = new Thread() {
             public void run() {
-                WebBrowser webBrowser = new WebBrowser();
-                webBrowser.browserLaunch(GlobalConstants.BASE_URL);
+//                WebBrowser webBrowser = new WebBrowser();
+//                webBrowser.browserLaunch(GlobalConstants.BASE_URL);
+                FxWebViewExample4 fxWebViewExample4=new FxWebViewExample4();
+                fxWebViewExample4.browserLaunch(GlobalConstants.BASE_URL);
             }
         };
         t.start();

@@ -1,5 +1,6 @@
 package com.por.ui;
 
+import com.por.ex.FxWebViewExample4;
 import com.por.utils.Generic;
 import com.por.utils.GlobalConstants;
 import com.por.utils.UIDesign;
@@ -385,7 +386,7 @@ public class Controls extends javax.swing.JFrame {
         pageElements.setVisible(true);
     }
     private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {
-
+        //WebBrowser.higlite();
     }
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {
        saveJson();
@@ -398,18 +399,23 @@ public class Controls extends javax.swing.JFrame {
             objects.clear();
 
             for (int k = 0; k < rowCount; k++) {
-                objects.add(getObjectInfo(tblRecordmodel.getValueAt(k, 1).toString(), tblRecordmodel.getValueAt(k, 2).toString(), tblRecordmodel.getValueAt(k, 3).toString()));
+                objects.add(getObjectInfo(tblRecordmodel.getValueAt(k, 1).toString(), tblRecordmodel.getValueAt(k, 3).toString(), tblRecordmodel.getValueAt(k, 2).toString()));
             }
-            System.out.println("title::"+GlobalConstants.PAGE_TITLE);
-            try (FileWriter file = new FileWriter(GlobalConstants.JSON_FILE_PATH + File.separator + Generic.removeSpecialChars(GlobalConstants.PAGE_TITLE) + "_" + Generic.getDate() + "_" + Generic.getTime() + ".json")) {
-                file.write(objects.toJSONString());
-            } catch (IOException e) {
-                e.printStackTrace();
+
+            if(StringUtils.isEmpty(GlobalConstants.PAGE_TITLE)){
+                new EnterPageName();
+            } else {
+                try (FileWriter file = new FileWriter(GlobalConstants.JSON_FILE_PATH + File.separator + Generic.removeSpecialChars(GlobalConstants.PAGE_TITLE) + "_" + Generic.getDate() + "_" + Generic.getTime() + ".json")) {
+                    file.write(objects.toJSONString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                clearTable();
+                clearFields();
             }
           //  JOptionPane.showMessageDialog(null, "Successfully Saved , File Path::" + GlobalConstants.JSON_FILE_PATH + File.separator + Generic.removeSpecialChars(GlobalConstants.PAGE_TITLE) + "_" + Generic.getDate() + "_" + Generic.getTime() + ".json", "Info", JOptionPane.INFORMATION_MESSAGE);
 
-            clearTable();
-            clearFields();
+
         }
     }
 
@@ -418,7 +424,7 @@ public class Controls extends javax.swing.JFrame {
         tblRecordmodel.removeRow(selected_row);
     }
     private void btnCloseActionPerformed(java.awt.event.ActionEvent evt) {
-        WebBrowser.controls.setVisible(false);
+        FxWebViewExample4.controls.setVisible(false);
     }
     static JSONObject getObjectInfo(String objName, String objPath, String objType){
         JSONObject obj = new JSONObject();
